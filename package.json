@@ -1,0 +1,26 @@
+{
+  "name": "personal-news-source",
+  "private": false,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A self-hostable personal news dashboard. Bring your own RSS feeds.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^6.0.2",
+    "typescript": "^5.5.3",
+    "vite": "^8.0.16"
+  }
+}
