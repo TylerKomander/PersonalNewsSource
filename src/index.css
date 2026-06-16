@@ -96,6 +96,42 @@ body {
 
 .load-more { display: flex; justify-content: center; margin-top: 24px; }
 
+.site-row { gap: 6px; }
+.site-label { font-size: 12px; color: var(--muted); margin-right: 2px; }
+.chip.site-chip {
+  font-size: 12px;
+  padding: 4px 11px;
+  border-color: var(--border);
+}
+.chip.site-chip.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 600; }
+.chip.site-chip.suggest { color: var(--muted); border-style: dashed; }
+.chip.site-chip .tag-x { margin-left: 4px; }
+.site-input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 10px;
+  color: var(--text);
+  font-size: 13px;
+  width: 160px;
+}
+.site-input:focus { outline: 2px solid var(--accent); }
+
+.site-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.site-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--surface-2);
+}
+.site-tag.preset { color: var(--muted); }
+.site-tag.custom { color: var(--text); border: 1px solid var(--border); }
+.tag-x { background: none; border: none; color: var(--muted); cursor: pointer; padding: 0; font-size: 11px; }
+.tag-x:hover { color: #ff6b6b; }
+
 /* Grid */
 .grid {
   margin-top: 20px;

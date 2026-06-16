@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import type { Config, Feed, SourceType } from '../types'
 import { DEFAULT_CONFIG } from '../defaults'
-import { SOURCE_CATALOG, subredditUrl, githubUrl } from '../sources'
+import { SOURCE_CATALOG, subredditUrl, githubUrl, normalizeDomain } from '../sources'
 import { hostname } from '../lib/format'
 
 type Props = {
@@ -21,6 +21,7 @@ export function SettingsDrawer({ config, onChange, onClose }: Props) {
   const [url, setUrl] = useState('')
   const [sub, setSub] = useState('')
   const [repo, setRepo] = useState('')
+  const [site, setSite] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
   const added = new Set(config.feeds.map((f) => f.url))
@@ -60,6 +61,32 @@ export function SettingsDrawer({ config, onChange, onClose }: Props) {
 
   function removeFeed(id: string) {
     onChange({ ...config, feeds: config.feeds.filter((f) => f.id !== id) })
+  }
+
+  function addSite() {
+    const domain = normalizeDomain(site)
+    if (!domain) {
+      alert('Enter a website like espn.com')
+      return
+    }
+    onChange({
+      ...config,
+      topics: config.topics.map((t) =>
+        t.id === topicId && !(t.favoriteSites ?? []).includes(domain)
+          ? { ...t, favoriteSites: [...(t.favoriteSites ?? []), domain] }
+          : t,
+      ),
+    })
+    setSite('')
+  }
+
+  function removeSite(domain: string) {
+    onChange({
+      ...config,
+      topics: config.topics.map((t) =>
+        t.id === topicId ? { ...t, favoriteSites: (t.favoriteSites ?? []).filter((d) => d !== domain) } : t,
+      ),
+    })
   }
 
   function exportConfig() {
@@ -150,6 +177,31 @@ export function SettingsDrawer({ config, onChange, onClose }: Props) {
               onChange={(e) => setUrl(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && addCustom()} />
             <button className="btn" onClick={addCustom}>Add</button>
+          </div>
+        </section>
+
+        <section>
+          <h3>Favorite sites for {activeTopic?.name}</h3>
+          <p className="hint">
+            Favorited sites show up more often in this category, and you can tap one
+            on the feed to see only its stories. Popular sites are suggested there too.
+          </p>
+          <div className="site-tags">
+            {(activeTopic?.favoriteSites ?? []).length === 0 && (
+              <span className="hint">No favorites yet.</span>
+            )}
+            {(activeTopic?.favoriteSites ?? []).map((d) => (
+              <span key={d} className="site-tag custom">
+                ★ {d}
+                <button className="tag-x" onClick={() => removeSite(d)} title="Remove">✕</button>
+              </span>
+            ))}
+          </div>
+          <div className="add-feed">
+            <input placeholder="favorite a site, e.g. espn.com" value={site}
+              onChange={(e) => setSite(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && addSite()} />
+            <button className="btn" onClick={addSite}>★ Favorite</button>
           </div>
         </section>
 
