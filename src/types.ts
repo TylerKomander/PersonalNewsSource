@@ -1,11 +1,13 @@
+export type SourceType = 'rss' | 'reddit' | 'github'
+
 export type Topic = {
   id: string
   name: string
   color: string
   keywords: string[]
+  query: string
+  topic?: string
 }
-
-export type SourceType = 'rss' | 'reddit' | 'github'
 
 export type Feed = {
   id: string
@@ -21,7 +23,7 @@ export type Config = {
   refreshInterval: number
 }
 
-export type Article = {
+export type RawItem = {
   title: string
   link: string
   source: string
@@ -29,11 +31,16 @@ export type Article = {
   publishedAt: string | null
   summary: string
   image: string | null
+}
+
+export type Article = RawItem & {
   topicId: string
+  origin: 'web' | 'followed'
+  sourceType?: SourceType
 }
 
 export type FeedResult = {
   url: string
-  items: Omit<Article, 'topicId'>[]
+  items: RawItem[]
   error?: string
 }

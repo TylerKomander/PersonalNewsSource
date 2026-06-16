@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import type { Config } from './types'
 import { DEFAULT_CONFIG, PAGE_SIZE } from './defaults'
 import { matchesWord } from './lib/format'
+import { buildWebUrl } from './lib/googleNews'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { useFeeds } from './hooks/useFeeds'
 import { Toolbar } from './components/Toolbar'
@@ -15,29 +16,43 @@ export default function App() {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [limit, setLimit] = useState(PAGE_SIZE)
 
-  const { articles, loading, errors, lastUpdated, refresh } = useFeeds(config)
+  const topicById = useMemo(() => new Map(config.topics.map((t) => [t.id, t])), [config.topics])
+  const activeTopicObj = activeTopic ? topicById.get(activeTopic) ?? null : null
+  const activeKeywords = activeTopicObj?.keywords ?? []
 
-  const topicById = useMemo(
-    () => new Map(config.topics.map((t) => [t.id, t])),
-    [config.topics],
+  const terms = useMemo(() => {
+    const t = [...activeKeywords]
+    if (search.trim()) t.push(search.trim())
+    return t
+  }, [activeKeywords, search])
+
+  const webUrl = useMemo(() => buildWebUrl(activeTopicObj, terms), [activeTopicObj, terms])
+  const followed = useMemo(
+    () => (activeTopic ? config.feeds.filter((f) => f.topicId === activeTopic) : config.feeds),
+    [config.feeds, activeTopic],
   )
 
-  const activeKeywords = activeTopic ? topicById.get(activeTopic)?.keywords ?? [] : []
+  const { articles, loading, errors, lastUpdated, refresh } = useFeeds({
+    webUrl,
+    webTopicId: activeTopic ?? '',
+    followed,
+    refreshInterval: config.refreshInterval,
+  })
 
   const visible = useMemo(() => {
     const q = search.trim().toLowerCase()
     return articles.filter((a) => {
-      if (activeTopic && a.topicId !== activeTopic) return false
+      if (a.origin === 'web') return true
       const haystack = `${a.title} ${a.summary}`
       if (activeKeywords.length > 0 && !activeKeywords.some((k) => matchesWord(haystack, k))) return false
       if (q && !haystack.toLowerCase().includes(q)) return false
       return true
     })
-  }, [articles, activeTopic, activeKeywords, search])
+  }, [articles, activeKeywords, search])
 
   useEffect(() => {
     setLimit(PAGE_SIZE)
-  }, [activeTopic, search, activeKeywords])
+  }, [webUrl])
 
   function setTopicKeywords(raw: string) {
     if (!activeTopic) return
@@ -71,16 +86,12 @@ export default function App() {
 
       {errors.length > 0 && (
         <div className="errors">
-          {errors.length} feed{errors.length > 1 ? 's' : ''} failed to load.
+          {errors.length} source{errors.length > 1 ? 's' : ''} failed to load.
         </div>
       )}
 
       {visible.length === 0 && !loading ? (
-        <div className="empty">
-          {config.feeds.length === 0
-            ? 'No feeds yet — open Settings to add one.'
-            : 'No stories match the current filter.'}
-        </div>
+        <div className="empty">No stories found. Try a different search or category.</div>
       ) : (
         <>
           <main className="grid">

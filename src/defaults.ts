@@ -8,21 +8,21 @@ export const REFRESH_OPTIONS: { label: string; value: number }[] = [
 ]
 
 export const DEFAULT_TOPICS: Topic[] = [
-  { id: 'tech', name: 'Tech', color: '#4f9dff', keywords: [] },
-  { id: 'ai', name: 'AI', color: '#8b5cf6', keywords: [] },
-  { id: 'science', name: 'Science', color: '#14b8a6', keywords: [] },
-  { id: 'world', name: 'World', color: '#34c759', keywords: [] },
-  { id: 'politics', name: 'Politics', color: '#ef4444', keywords: [] },
-  { id: 'business', name: 'Business', color: '#f59e0b', keywords: [] },
-  { id: 'finance', name: 'Finance', color: '#ffb020', keywords: [] },
-  { id: 'crypto', name: 'Crypto', color: '#f7931a', keywords: [] },
-  { id: 'sports', name: 'Sports', color: '#22c55e', keywords: [] },
-  { id: 'gaming', name: 'Gaming', color: '#ec4899', keywords: [] },
-  { id: 'entertainment', name: 'Entertainment', color: '#d946ef', keywords: [] },
-  { id: 'health', name: 'Health', color: '#06b6d4', keywords: [] },
-  { id: 'climate', name: 'Climate', color: '#10b981', keywords: [] },
-  { id: 'space', name: 'Space', color: '#6366f1', keywords: [] },
-  { id: 'hobby', name: 'Hobby', color: '#c06bff', keywords: [] },
+  { id: 'tech', name: 'Tech', color: '#4f9dff', keywords: [], query: 'technology', topic: 'TECHNOLOGY' },
+  { id: 'ai', name: 'AI', color: '#8b5cf6', keywords: [], query: 'artificial intelligence' },
+  { id: 'science', name: 'Science', color: '#14b8a6', keywords: [], query: 'science', topic: 'SCIENCE' },
+  { id: 'world', name: 'World', color: '#34c759', keywords: [], query: 'world news', topic: 'WORLD' },
+  { id: 'politics', name: 'Politics', color: '#ef4444', keywords: [], query: 'politics' },
+  { id: 'business', name: 'Business', color: '#f59e0b', keywords: [], query: 'business', topic: 'BUSINESS' },
+  { id: 'finance', name: 'Finance', color: '#ffb020', keywords: [], query: 'stock market finance' },
+  { id: 'crypto', name: 'Crypto', color: '#f7931a', keywords: [], query: 'cryptocurrency' },
+  { id: 'sports', name: 'Sports', color: '#22c55e', keywords: [], query: 'sports', topic: 'SPORTS' },
+  { id: 'gaming', name: 'Gaming', color: '#ec4899', keywords: [], query: 'video games' },
+  { id: 'entertainment', name: 'Entertainment', color: '#d946ef', keywords: [], query: 'entertainment', topic: 'ENTERTAINMENT' },
+  { id: 'health', name: 'Health', color: '#06b6d4', keywords: [], query: 'health', topic: 'HEALTH' },
+  { id: 'climate', name: 'Climate', color: '#10b981', keywords: [], query: 'climate change' },
+  { id: 'space', name: 'Space', color: '#6366f1', keywords: [], query: 'space exploration' },
+  { id: 'hobby', name: 'Hobby', color: '#c06bff', keywords: [], query: 'hobbies' },
 ]
 
 export const DEFAULT_CONFIG: Config = {
