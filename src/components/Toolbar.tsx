@@ -29,7 +29,7 @@ export function Toolbar(props: Props) {
         <input
           className="search"
           type="search"
-          placeholder="Search headlines…"
+          placeholder="Search the web for news…"
           value={props.search}
           onChange={(e) => props.onSearch(e.target.value)}
         />
