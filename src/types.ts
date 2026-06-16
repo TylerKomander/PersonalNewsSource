@@ -7,6 +7,7 @@ export type Topic = {
   keywords: string[]
   query: string
   topic?: string
+  favoriteSites?: string[]
 }
 
 export type Feed = {

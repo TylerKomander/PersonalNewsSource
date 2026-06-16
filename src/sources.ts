@@ -82,6 +82,104 @@ export const SOURCE_CATALOG: Record<string, CatalogSource[]> = {
   ],
 }
 
+export type SiteOption = { name: string; domain: string }
+
+export const SITE_CATALOG: Record<string, SiteOption[]> = {
+  tech: [
+    { name: 'The Verge', domain: 'theverge.com' },
+    { name: 'Ars Technica', domain: 'arstechnica.com' },
+    { name: 'TechCrunch', domain: 'techcrunch.com' },
+    { name: 'Wired', domain: 'wired.com' },
+    { name: 'Engadget', domain: 'engadget.com' },
+  ],
+  ai: [
+    { name: 'VentureBeat', domain: 'venturebeat.com' },
+    { name: 'MIT Tech Review', domain: 'technologyreview.com' },
+    { name: 'The Verge', domain: 'theverge.com' },
+  ],
+  science: [
+    { name: 'Nature', domain: 'nature.com' },
+    { name: 'ScienceDaily', domain: 'sciencedaily.com' },
+    { name: 'Sci. American', domain: 'scientificamerican.com' },
+    { name: 'Quanta', domain: 'quantamagazine.org' },
+  ],
+  world: [
+    { name: 'Reuters', domain: 'reuters.com' },
+    { name: 'AP', domain: 'apnews.com' },
+    { name: 'BBC', domain: 'bbc.com' },
+    { name: 'Al Jazeera', domain: 'aljazeera.com' },
+  ],
+  politics: [
+    { name: 'Politico', domain: 'politico.com' },
+    { name: 'The Hill', domain: 'thehill.com' },
+    { name: 'NPR', domain: 'npr.org' },
+    { name: 'AP', domain: 'apnews.com' },
+  ],
+  business: [
+    { name: 'Bloomberg', domain: 'bloomberg.com' },
+    { name: 'CNBC', domain: 'cnbc.com' },
+    { name: 'WSJ', domain: 'wsj.com' },
+    { name: 'Financial Times', domain: 'ft.com' },
+  ],
+  finance: [
+    { name: 'CNBC', domain: 'cnbc.com' },
+    { name: 'MarketWatch', domain: 'marketwatch.com' },
+    { name: 'Yahoo Finance', domain: 'finance.yahoo.com' },
+    { name: 'Bloomberg', domain: 'bloomberg.com' },
+  ],
+  crypto: [
+    { name: 'CoinDesk', domain: 'coindesk.com' },
+    { name: 'Cointelegraph', domain: 'cointelegraph.com' },
+    { name: 'The Block', domain: 'theblock.co' },
+    { name: 'Decrypt', domain: 'decrypt.co' },
+  ],
+  sports: [
+    { name: 'ESPN', domain: 'espn.com' },
+    { name: 'CBS Sports', domain: 'cbssports.com' },
+    { name: 'The Athletic', domain: 'theathletic.com' },
+    { name: 'Bleacher Report', domain: 'bleacherreport.com' },
+  ],
+  gaming: [
+    { name: 'IGN', domain: 'ign.com' },
+    { name: 'Polygon', domain: 'polygon.com' },
+    { name: 'Kotaku', domain: 'kotaku.com' },
+    { name: 'GameSpot', domain: 'gamespot.com' },
+    { name: 'Eurogamer', domain: 'eurogamer.net' },
+  ],
+  entertainment: [
+    { name: 'Variety', domain: 'variety.com' },
+    { name: 'Hollywood Reporter', domain: 'hollywoodreporter.com' },
+    { name: 'Deadline', domain: 'deadline.com' },
+  ],
+  health: [
+    { name: 'WebMD', domain: 'webmd.com' },
+    { name: 'Healthline', domain: 'healthline.com' },
+    { name: 'STAT', domain: 'statnews.com' },
+    { name: 'Med News Today', domain: 'medicalnewstoday.com' },
+  ],
+  climate: [
+    { name: 'Grist', domain: 'grist.org' },
+    { name: 'Inside Climate', domain: 'insideclimatenews.org' },
+    { name: 'Yale E360', domain: 'e360.yale.edu' },
+  ],
+  space: [
+    { name: 'Space.com', domain: 'space.com' },
+    { name: 'NASA', domain: 'nasa.gov' },
+    { name: 'SpaceNews', domain: 'spacenews.com' },
+  ],
+  hobby: [],
+}
+
+export function normalizeDomain(input: string): string | null {
+  const d = input.trim().toLowerCase()
+    .replace(/^https?:\/\//, '')
+    .replace(/^www\./, '')
+    .replace(/\/.*$/, '')
+    .trim()
+  if (!/^[a-z0-9.-]+\.[a-z]{2,}$/.test(d)) return null
+  return d
+}
+
 export function subredditUrl(input: string): string | null {
   const name = input.trim().replace(/^https?:\/\/(www\.)?reddit\.com/i, '').replace(/^\/?r\//i, '').replace(/\/.*$/, '').trim()
   if (!/^[\w]+$/.test(name)) return null

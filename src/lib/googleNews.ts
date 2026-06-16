@@ -23,13 +23,22 @@ export function splitTitleSource(title: string): { title: string; source: string
   return { title, source: null }
 }
 
-export function buildWebUrl(topic: Topic | null, terms: string[]): string {
+function siteClause(sites: string[]): string {
+  if (sites.length === 1) return `site:${sites[0]}`
+  return `(${sites.map((s) => `site:${s}`).join(' OR ')})`
+}
+
+export function buildWebUrl(topic: Topic | null, terms: string[], sites: string[] = []): string {
   const clean = terms.map((t) => t.trim()).filter(Boolean)
-  if (clean.length > 0) {
-    const q = [topic?.query, ...clean].filter(Boolean).join(' ')
-    return searchUrl(q)
+  const cleanSites = sites.filter(Boolean)
+  if (clean.length === 0 && cleanSites.length === 0) {
+    if (topic?.topic) return topicUrl(topic.topic)
+    if (topic?.query) return searchUrl(topic.query)
+    return topUrl()
   }
-  if (topic?.topic) return topicUrl(topic.topic)
-  if (topic?.query) return searchUrl(topic.query)
-  return topUrl()
+  const parts: string[] = []
+  if (topic?.query) parts.push(topic.query)
+  parts.push(...clean)
+  if (cleanSites.length > 0) parts.push(siteClause(cleanSites))
+  return searchUrl(parts.join(' '))
 }

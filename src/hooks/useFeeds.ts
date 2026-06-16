@@ -4,7 +4,7 @@ import { fetchFeeds } from '../lib/api'
 import { splitTitleSource } from '../lib/googleNews'
 
 type Opts = {
-  webUrl: string
+  webUrls: string[]
   webTopicId: string
   followed: Feed[]
   refreshInterval: number
@@ -17,7 +17,7 @@ function tagWeb(items: RawItem[], topicId: string): Article[] {
   })
 }
 
-export function useFeeds({ webUrl, webTopicId, followed, refreshInterval }: Opts) {
+export function useFeeds({ webUrls, webTopicId, followed, refreshInterval }: Opts) {
   const [web, setWeb] = useState<{ items: Article[]; loading: boolean; error: string | null }>({
     items: [], loading: false, error: null,
   })
@@ -27,18 +27,20 @@ export function useFeeds({ webUrl, webTopicId, followed, refreshInterval }: Opts
   const feedByUrl = useRef<Map<string, Feed>>(new Map())
   feedByUrl.current = new Map(followed.map((f) => [f.url, f]))
   const followedKey = followed.map((f) => f.url).join('|')
+  const webKey = webUrls.join('|')
 
   const loadWeb = useCallback(async () => {
     setWeb((s) => ({ ...s, loading: true }))
     try {
-      const res = await fetchFeeds([webUrl])
-      const r = res[0]
-      setWeb({ items: r ? tagWeb(r.items, webTopicId) : [], loading: false, error: r?.error ?? null })
+      const res = await fetchFeeds(webUrls)
+      const items = res.flatMap((r) => tagWeb(r.items, webTopicId))
+      setWeb({ items, loading: false, error: res.find((r) => r.error)?.error ?? null })
       setLastUpdated(Date.now())
     } catch (e) {
       setWeb({ items: [], loading: false, error: e instanceof Error ? e.message : String(e) })
     }
-  }, [webUrl, webTopicId])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [webKey, webTopicId])
 
   const loadFollowed = useCallback(async () => {
     const urls = followed.map((f) => f.url)
