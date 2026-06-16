@@ -13,6 +13,18 @@ export function relativeTime(iso: string | null): string {
   return new Date(iso).toLocaleDateString()
 }
 
+export function matchesWord(haystack: string, term: string): boolean {
+  const tokens = term
+    .trim()
+    .split(/[\s-]+/)
+    .filter(Boolean)
+    .map((tok) => tok.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+  if (tokens.length === 0) return true
+  const pattern = tokens.join('[\\s-]?')
+  const re = new RegExp(`(^|[^a-z0-9])${pattern}`, 'i')
+  return re.test(haystack)
+}
+
 export function hostname(url: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./, '')

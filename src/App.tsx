@@ -1,6 +1,7 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import type { Config } from './types'
-import { DEFAULT_CONFIG } from './defaults'
+import { DEFAULT_CONFIG, PAGE_SIZE } from './defaults'
+import { matchesWord } from './lib/format'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { useFeeds } from './hooks/useFeeds'
 import { Toolbar } from './components/Toolbar'
@@ -12,6 +13,7 @@ export default function App() {
   const [activeTopic, setActiveTopic] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [limit, setLimit] = useState(PAGE_SIZE)
 
   const { articles, loading, errors, lastUpdated, refresh } = useFeeds(config)
 
@@ -20,22 +22,33 @@ export default function App() {
     [config.topics],
   )
 
+  const activeKeywords = activeTopic ? topicById.get(activeTopic)?.keywords ?? [] : []
+
   const visible = useMemo(() => {
     const q = search.trim().toLowerCase()
-    const topic = activeTopic ? topicById.get(activeTopic) : null
-    const keywords = topic?.keywords ?? []
     return articles.filter((a) => {
       if (activeTopic && a.topicId !== activeTopic) return false
-      const haystack = `${a.title} ${a.summary}`.toLowerCase()
-      if (keywords.length > 0 && !keywords.some((k) => haystack.includes(k.toLowerCase()))) return false
-      if (q && !haystack.includes(q)) return false
+      const haystack = `${a.title} ${a.summary}`
+      if (activeKeywords.length > 0 && !activeKeywords.some((k) => matchesWord(haystack, k))) return false
+      if (q && !haystack.toLowerCase().includes(q)) return false
       return true
     })
-  }, [articles, activeTopic, search, topicById])
+  }, [articles, activeTopic, activeKeywords, search])
 
-  function setRefreshInterval(refreshInterval: number) {
-    setConfig({ ...config, refreshInterval })
+  useEffect(() => {
+    setLimit(PAGE_SIZE)
+  }, [activeTopic, search, activeKeywords])
+
+  function setTopicKeywords(raw: string) {
+    if (!activeTopic) return
+    const keywords = raw.split(',').map((k) => k.trim()).filter(Boolean)
+    setConfig({
+      ...config,
+      topics: config.topics.map((t) => (t.id === activeTopic ? { ...t, keywords } : t)),
+    })
   }
+
+  const shown = visible.slice(0, limit)
 
   return (
     <div className="app">
@@ -43,10 +56,12 @@ export default function App() {
         topics={config.topics}
         activeTopic={activeTopic}
         onTopic={setActiveTopic}
+        keywordValue={activeKeywords.join(', ')}
+        onKeywords={setTopicKeywords}
         search={search}
         onSearch={setSearch}
         refreshInterval={config.refreshInterval}
-        onInterval={setRefreshInterval}
+        onInterval={(refreshInterval) => setConfig({ ...config, refreshInterval })}
         onRefresh={refresh}
         onOpenSettings={() => setSettingsOpen(true)}
         loading={loading}
@@ -67,11 +82,20 @@ export default function App() {
             : 'No stories match the current filter.'}
         </div>
       ) : (
-        <main className="grid">
-          {visible.map((a, i) => (
-            <ArticleCard key={`${a.link}-${i}`} article={a} topic={topicById.get(a.topicId)} />
-          ))}
-        </main>
+        <>
+          <main className="grid">
+            {shown.map((a, i) => (
+              <ArticleCard key={`${a.link}-${i}`} article={a} topic={topicById.get(a.topicId)} />
+            ))}
+          </main>
+          {limit < visible.length && (
+            <div className="load-more">
+              <button className="btn ghost" onClick={() => setLimit((n) => n + PAGE_SIZE)}>
+                Load more ({visible.length - limit} left)
+              </button>
+            </div>
+          )}
+        </>
       )}
 
       {settingsOpen && (
