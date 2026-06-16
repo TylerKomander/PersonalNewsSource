@@ -22,7 +22,13 @@ on your own machine and your setup lives in your browser.
 
 ## Run it yourself
 
-You need [Node.js](https://nodejs.org) 20+. Then:
+You need [Node.js](https://nodejs.org) 20+.
+
+**Easiest — double-click the launcher:**
+- **Windows:** `start.cmd`
+- **Mac/Linux:** `./start.sh`
+
+It installs, builds, opens your browser, and starts the server. Or do it by hand:
 
 ```bash
 npm install

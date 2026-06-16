@@ -3,8 +3,11 @@
   "private": false,
   "version": "0.1.0",
   "type": "module",
-  "description": "A self-hostable personal news dashboard. Bring your own RSS feeds.",
+  "description": "A self-hostable personal news dashboard. Search the web for news, scope by topic, follow your own sources.",
   "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
