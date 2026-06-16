@@ -13,7 +13,10 @@ type FeedItem = {
 
 const parser = new Parser({
   timeout: 10000,
-  headers: { 'User-Agent': 'PersonalNewsSource/0.1 (+https://github.com)' },
+  headers: {
+    'User-Agent': 'PersonalNewsSource/0.1 (RSS reader; +https://github.com/personal-news-source)',
+    Accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml; q=0.9, */*; q=0.8',
+  },
   customFields: {
     item: [
       ['media:content', 'mediaContent', { keepArray: true }],

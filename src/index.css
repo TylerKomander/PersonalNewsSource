@@ -173,3 +173,25 @@ body {
 .io { display: flex; gap: 10px; flex-wrap: wrap; }
 .btn.danger { color: #ff6b6b; border-color: #5a2a2a; }
 .btn.danger:hover { background: #2a1a1a; }
+
+.drawer h4 { font-size: 13px; color: var(--text); margin: 18px 0 8px; }
+.cat-select { width: 100%; }
+
+.catalog { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.catalog li { display: flex; align-items: center; gap: 8px; background: var(--surface-2); border-radius: 8px; padding: 7px 10px; }
+.catalog .feed-name { flex: 1; }
+.catalog .btn.tiny { font-size: 12px; }
+.catalog .btn.tiny:disabled { color: var(--muted); opacity: 1; }
+
+.src-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 2px 6px;
+  border-radius: 5px;
+  flex: none;
+}
+.src-rss { background: #3a2a16; color: #ffb020; }
+.src-reddit { background: #3a1f16; color: #ff7a4d; }
+.src-github { background: #20283a; color: #8aa4ff; }

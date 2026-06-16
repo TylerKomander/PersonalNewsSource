@@ -5,11 +5,14 @@ export type Topic = {
   keywords: string[]
 }
 
+export type SourceType = 'rss' | 'reddit' | 'github'
+
 export type Feed = {
   id: string
   url: string
   title: string
   topicId: string
+  type?: SourceType
 }
 
 export type Config = {
