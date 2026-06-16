@@ -9,6 +9,7 @@ import { useFeeds } from './hooks/useFeeds'
 import { Toolbar } from './components/Toolbar'
 import { ArticleCard } from './components/ArticleCard'
 import { SettingsDrawer } from './components/SettingsDrawer'
+import { PaperShader } from './components/PaperShader'
 
 export default function App() {
   const [config, setConfig] = useLocalStorage<Config>('pns-config', DEFAULT_CONFIG)
@@ -122,6 +123,7 @@ export default function App() {
 
   return (
     <div className="app">
+      <PaperShader className="bg-vector" />
       <Toolbar
         topics={config.topics}
         activeTopic={activeTopic}

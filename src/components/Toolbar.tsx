@@ -82,7 +82,7 @@ export function Toolbar(props: Props) {
           <button
             key={t.id}
             className={`chip ${props.activeTopic === t.id ? 'active' : ''}`}
-            style={props.activeTopic === t.id ? { background: t.color, borderColor: t.color } : { borderColor: t.color }}
+            style={props.activeTopic === t.id ? { background: t.color, borderColor: t.color } : undefined}
             onClick={() => props.onTopic(t.id)}
           >
             {t.name}
