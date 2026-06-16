@@ -43,7 +43,14 @@ export function useFeeds(config: Config) {
         const tb = b.publishedAt ? new Date(b.publishedAt).getTime() : 0
         return tb - ta
       })
-      setState({ articles, loading: false, errors, lastUpdated: Date.now() })
+      const seen = new Set<string>()
+      const deduped = articles.filter((a) => {
+        const key = a.link || a.title
+        if (seen.has(key)) return false
+        seen.add(key)
+        return true
+      })
+      setState({ articles: deduped, loading: false, errors, lastUpdated: Date.now() })
     } catch (err) {
       setState((s) => ({
         ...s,

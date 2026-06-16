@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
-import type { Config, Feed, Topic } from '../types'
+import type { Config, Feed } from '../types'
+import { DEFAULT_CONFIG } from '../defaults'
 import { hostname } from '../lib/format'
 
 type Props = {
@@ -27,14 +28,6 @@ export function SettingsDrawer({ config, onChange, onClose }: Props) {
 
   function removeFeed(id: string) {
     onChange({ ...config, feeds: config.feeds.filter((f) => f.id !== id) })
-  }
-
-  function setKeywords(topic: Topic, raw: string) {
-    const keywords = raw.split(',').map((k) => k.trim()).filter(Boolean)
-    onChange({
-      ...config,
-      topics: config.topics.map((t) => (t.id === topic.id ? { ...t, keywords } : t)),
-    })
   }
 
   function exportConfig() {
@@ -104,23 +97,6 @@ export function SettingsDrawer({ config, onChange, onClose }: Props) {
           </ul>
         </section>
 
-        <section>
-          <h3>Topic filters</h3>
-          <p className="hint">Comma-separated keywords narrow a topic to only matching stories.</p>
-          {config.topics.map((t) => (
-            <div className="topic-row" key={t.id}>
-              <span className="topic-dot" style={{ background: t.color }} />
-              <label>{t.name}</label>
-              <input
-                type="text"
-                placeholder="e.g. ai, rust, gpu"
-                defaultValue={t.keywords.join(', ')}
-                onBlur={(e) => setKeywords(t, e.target.value)}
-              />
-            </div>
-          ))}
-        </section>
-
         <section className="io">
           <button className="btn ghost" onClick={exportConfig}>Export config</button>
           <button className="btn ghost" onClick={() => fileRef.current?.click()}>Import config</button>
@@ -131,6 +107,12 @@ export function SettingsDrawer({ config, onChange, onClose }: Props) {
             hidden
             onChange={(e) => e.target.files?.[0] && importConfig(e.target.files[0])}
           />
+          <button
+            className="btn ghost danger"
+            onClick={() => confirm('Reset all feeds and categories to defaults?') && onChange(DEFAULT_CONFIG)}
+          >
+            Reset to defaults
+          </button>
         </section>
       </aside>
     </div>

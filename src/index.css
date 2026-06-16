@@ -81,6 +81,21 @@ body {
 .chip.active { color: #fff; font-weight: 600; }
 .status { color: var(--muted); font-size: 12px; margin-left: auto; }
 
+.keyword-row { gap: 8px; }
+.keyword-box {
+  flex: 1;
+  min-width: 200px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 14px;
+}
+.keyword-box:focus { outline: 2px solid var(--accent); }
+
+.load-more { display: flex; justify-content: center; margin-top: 24px; }
+
 /* Grid */
 .grid {
   margin-top: 20px;
@@ -155,4 +170,6 @@ body {
 .topic-row label { width: 64px; font-size: 13px; }
 .topic-row input { flex: 1; }
 
-.io { display: flex; gap: 10px; }
+.io { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn.danger { color: #ff6b6b; border-color: #5a2a2a; }
+.btn.danger:hover { background: #2a1a1a; }

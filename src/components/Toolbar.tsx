@@ -6,6 +6,8 @@ type Props = {
   topics: Topic[]
   activeTopic: string | null
   onTopic: (id: string | null) => void
+  keywordValue: string
+  onKeywords: (v: string) => void
   search: string
   onSearch: (v: string) => void
   refreshInterval: number
@@ -18,6 +20,8 @@ type Props = {
 }
 
 export function Toolbar(props: Props) {
+  const active = props.activeTopic ? props.topics.find((t) => t.id === props.activeTopic) : null
+
   return (
     <header className="toolbar">
       <div className="toolbar-row">
@@ -48,6 +52,7 @@ export function Toolbar(props: Props) {
           Settings
         </button>
       </div>
+
       <div className="toolbar-row chips">
         <button
           className={`chip ${props.activeTopic === null ? 'active' : ''}`}
@@ -65,11 +70,34 @@ export function Toolbar(props: Props) {
             {t.name}
           </button>
         ))}
-        <span className="status">
-          {props.count} stories
-          {props.lastUpdated ? ` · updated ${relativeTime(new Date(props.lastUpdated).toISOString())}` : ''}
-        </span>
       </div>
+
+      {active && (
+        <div className="toolbar-row keyword-row">
+          <span className="topic-dot" style={{ background: active.color }} />
+          <input
+            className="keyword-box"
+            type="text"
+            placeholder={`Narrow ${active.name} — e.g. cyber security, ransomware`}
+            value={props.keywordValue}
+            onChange={(e) => props.onKeywords(e.target.value)}
+          />
+          {props.keywordValue && (
+            <button className="btn ghost" onClick={() => props.onKeywords('')}>
+              Clear
+            </button>
+          )}
+          <span className="status">{props.count} stories</span>
+        </div>
+      )}
+      {!active && (
+        <div className="toolbar-row">
+          <span className="status">
+            {props.count} stories
+            {props.lastUpdated ? ` · updated ${relativeTime(new Date(props.lastUpdated).toISOString())}` : ''}
+          </span>
+        </div>
+      )}
     </header>
   )
 }
