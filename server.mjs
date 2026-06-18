@@ -131,7 +131,7 @@ server.listen(PORT, '0.0.0.0', () => {
     .flat()
     .filter((i) => i && i.family === 'IPv4' && !i.internal)
     .map((i) => i.address)
-  console.log('\n  📰 Personal News Source is running:\n')
+  console.log('\n  Personal News Source is running:\n')
   console.log(`     Local:    http://localhost:${PORT}`)
   for (const ip of lan) console.log(`     Network:  http://${ip}:${PORT}   (open this on phones/other devices)`)
   console.log('\n  Press Ctrl+C to stop.\n')

@@ -47,7 +47,7 @@ export function Toolbar(props: Props) {
   return (
     <header className="toolbar">
       <div className="toolbar-row">
-        <h1 className="brand">📰 Personal News</h1>
+        <h1 className="brand">Personal News</h1>
         <input
           className="search"
           type="search"
