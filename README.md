@@ -1,34 +1,38 @@
 # 📰 Personal News Source
 
-A self-hostable personal news dashboard. Search the whole web for news, scope it
-by topic, favorite the sites you trust, and follow specific RSS / Reddit / GitHub
-sources — all in one card feed. No accounts, no database, nothing public: it runs
-on your own machine and your setup lives in your browser.
+**Your own news dashboard — the news *you* want, on a machine *you* control.**
 
-## Features
+Search the whole web for stories, narrow them to the topics and sites you trust,
+and follow specific RSS / Reddit / GitHub sources — all in one clean card feed.
 
-- **Web search** — the search bar queries news from across the web (via Google
-  News), not just a fixed list of feeds.
-- **15 topic categories** — scope the search to Tech, World, Sports, Finance, etc.
-  Each is editable.
-- **Keyword scoping** — narrow a category to terms you care about (e.g. *Tech →
-  "cyber security"*); saved per category.
-- **Site control** — restrict a search to specific sites ("Only"), or **favorite**
-  sites per topic so they show up more often.
-- **Follow sources** — add any RSS/Atom feed, a subreddit, or a GitHub repo's
-  releases; they merge into the feed.
-- **Choosable refresh**, **export/import config**, **zero backend state**
-  (config lives in `localStorage`).
+No accounts to make. No database to run. Nothing leaves your machine: the app
+runs locally and your whole setup lives in your browser. Fork it, tweak it, host
+it for your household — it's yours.
 
-## Run it yourself
+## What you can do
 
-You need [Node.js](https://nodejs.org) 20+.
+- 🔎 **Search the open web** — the search bar pulls live news from across the web
+  (via Google News), not just a fixed list of feeds.
+- 🗂️ **15 topic categories** — Tech, World, Sports, Finance, and more. All editable.
+- 🎯 **Zero in with keywords** — narrow any category to the terms you care about
+  (*Tech → "cyber security"*). Saved per topic.
+- ⭐ **Pick your sources** — restrict a search to specific sites, or **favorite**
+  the ones you trust so they surface more often.
+- 📡 **Follow anything** — add any RSS/Atom feed, a subreddit, or a GitHub repo's
+  releases and it merges right into your feed.
+- 🔄 **Refresh on your schedule**, 💾 **export/import your config**, and keep
+  **everything local** (it all lives in `localStorage`).
 
-**Easiest — double-click the launcher:**
+## Get it running
+
+You'll need [Node.js](https://nodejs.org) 20 or newer. That's the only requirement.
+
+**The easy way — just double-click the launcher:**
 - **Windows:** `start.cmd`
 - **Mac/Linux:** `./start.sh`
 
-It installs, builds, opens your browser, and starts the server. Or do it by hand:
+It installs everything, builds the app, opens your browser, and starts the
+server. Prefer to do it by hand? Two commands:
 
 ```bash
 npm install
